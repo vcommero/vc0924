@@ -1,7 +1,6 @@
 package com.vincecommero.toolman.commandlineinterface;
 
-import org.springframework.shell.Input;
-import org.springframework.shell.InputProvider;
+import org.jline.reader.LineReader;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -10,22 +9,22 @@ import org.springframework.shell.standard.ShellMethod;
 @ShellCommandGroup(value = "Rental Operations")
 public class RentalCommands {
 	
-	private final InputProvider inputProvider;
+	/*
+	private final LineReader lineReader;
 	
-	public RentalCommands(InputProvider inputProvider) {
-		this.inputProvider = inputProvider;
+	public RentalCommands(LineReader lineReader) {
+		this.lineReader = lineReader;
 	}
-
-	@ShellMethod(value = "Prints a greeting.", key = "greet")
-	public String greeting() {
-		return "Hello! Welcome to Rental Operations!";
-	}
+	*/
 	
-	@ShellMethod(value = "Checks out a tool from the inventory for rental.", key = "Checkout")
+	@ShellMethod(value = "Checks out a tool from the inventory for rental.", key = "checkout")
 	public String checkout() {
 		// Ask for rental duration
-        Input name = inputProvider.readInput();
 		
 		return "Finished!";
+	}
+	
+	/* Helper methods */
+	private void prompt() {
 	}
 }
