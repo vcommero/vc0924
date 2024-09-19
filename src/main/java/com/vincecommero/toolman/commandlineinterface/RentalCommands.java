@@ -10,6 +10,9 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
+import com.vincecommero.toolman.checkout.CheckoutService;
+import com.vincecommero.toolman.checkout.model.RentalAgreement;
+
 @ShellComponent
 @ShellCommandGroup(value = "Rental Operations")
 public class RentalCommands {
@@ -18,13 +21,16 @@ public class RentalCommands {
 	@Lazy
 	private LineReader lineReader;
 	
+	@Autowired
+	private CheckoutService checkoutService;
+	
 	@ShellMethod(value = "Checks out a tool from the inventory for rental.", key = "checkout")
 	public String checkout() {
 		// Asks user for tool code
-		String toolInput = "";
-		while (toolInput.isBlank()) {
-			toolInput = lineReader.readLine("Please enter the code of the tool you wish to checkout: ");
-			if (toolInput.isBlank())
+		String toolCode = "";
+		while (toolCode.isBlank()) {
+			toolCode = lineReader.readLine("Please enter the code of the tool you wish to checkout: ");
+			if (toolCode.isBlank())
 				System.out.println("Invalid input: Please enter a tool code.");
 		}
 		
@@ -89,9 +95,20 @@ public class RentalCommands {
 		}
 		
 		
-		return "Checkout values:\nToolCode: " + toolInput + 
+		System.out.println("Checkout values:\nToolCode: " + toolCode + 
 				"\nRental Duration: " + duration + 
 				"\nDiscount: " + discountPercentage +
-				"%\nCheckout Date: " + checkoutDate;
+				"%\nCheckout Date: " + checkoutDate);
+		
+		RentalAgreement agreement;
+		try {
+			agreement = checkoutService.checkout(toolCode, duration, checkoutDate, discountPercentage);
+			
+			return agreement.toString();
+		} catch (Exception e) {
+			System.out.println("hit an error");
+			e.printStackTrace();
+			throw e;
+		}
 	}
 }

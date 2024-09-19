@@ -21,4 +21,27 @@ public class Tool {
 	private ToolType toolType;
 	
 	private String toolBrand;
+
+	
+	// Getters and setters
+	public String getToolCode() {
+		return toolCode;
+	}
+	public void setToolCode(String toolCode) {
+		this.toolCode = toolCode;
+	}
+
+	public ToolType getToolType() {
+		return toolType;
+	}
+	public void setToolType(ToolType toolType) {
+		this.toolType = toolType;
+	}
+
+	public String getToolBrand() {
+		return toolBrand;
+	}
+	public void setToolBrand(String toolBrand) {
+		this.toolBrand = toolBrand;
+	}
 }
