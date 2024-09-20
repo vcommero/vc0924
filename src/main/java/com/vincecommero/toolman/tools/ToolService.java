@@ -29,11 +29,11 @@ public class ToolService {
 	}
 	
 	public Tool getToolByToolCode(String toolCode) {
-		return toolRepository.findById(toolCode).get(); // toolRepository.getReferenceById(toolCode);
+		return toolRepository.findById(toolCode).get();
 	}
 	
 	public ToolType getToolTypeByTypeName(String toolType) {
-		return toolTypeRepository.getReferenceById(toolType);
+		return toolTypeRepository.findById(toolType).get();
 	}
 	
 	

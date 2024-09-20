@@ -20,6 +20,14 @@ public class CheckoutService {
 		this.toolService = toolService;
 	}
 
+	/**
+	 * Performs operations to checkout a tool for rental and return a rental agreement with the details of the rental.
+	 * @param toolCode - Code of the tool being checked out for rental.
+	 * @param rentalDuration - Duration of the rental in days.
+	 * @param checkoutDate - Calendar date of the rental checkout.
+	 * @param discountPercentage - Discount as an integer ranging from 0 - 100.
+	 * @return Returns a RentalAgreement object with the details of the rental.
+	 */
 	public RentalAgreement checkout(String toolCode, int rentalDuration, LocalDate checkoutDate, int discountPercentage) {
 		
 		// Check if rental days and the discount percentage parameters are valid values
@@ -40,9 +48,28 @@ public class CheckoutService {
 			throw new IllegalArgumentException("A tool with the tool code: '" + toolCode + "' was not found.");
 		}
 		
+		// Compute calculated values for rental agreement
+		
+		
 		// Generate rental agreement
-		RentalAgreement agreement = new RentalAgreement();
+		RentalAgreement agreement = new RentalAgreement(
+				tool.getToolCode(), 
+				tool.getToolType().getTypeName(), 
+				tool.getToolBrand(), 
+				rentalDuration, 
+				checkoutDate, 
+				checkoutDate, // todo
+				tool.getToolType().getDailyCharge(), 
+				discountPercentage, // todo
+				discountPercentage, // todo
+				discountPercentage, 
+				discountPercentage, // todo
+				discountPercentage); // todo
 		
 		return agreement;
 	}
+	
+	
+	// Helper methods
+	
 }

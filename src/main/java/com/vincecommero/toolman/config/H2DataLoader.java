@@ -11,6 +11,10 @@ import com.vincecommero.toolman.tools.model.ToolType;
 import com.vincecommero.toolman.tools.repository.ToolRepository;
 import com.vincecommero.toolman.tools.repository.ToolTypeRepository;
 
+/**
+ * Seeds data into the H2 database.
+ */
+
 @Component
 @Order(1)
 public class H2DataLoader implements CommandLineRunner {
@@ -26,7 +30,7 @@ public class H2DataLoader implements CommandLineRunner {
 		System.out.println("==== Starting commandlinerunner");
 		
 		ToolType ladder = new ToolType();
-		ladder.setToolType("Ladder");
+		ladder.setTypeName("Ladder");
 		ladder.setDailyCharge(1990000);
 		ladder.setWeekdayCharge(true);
 		ladder.setWeekendCharge(true);
@@ -34,7 +38,7 @@ public class H2DataLoader implements CommandLineRunner {
 		toolTypeRepository.save(ladder);
 		
 		ToolType chainsaw = new ToolType();
-		chainsaw.setToolType("Chainsaw");
+		chainsaw.setTypeName("Chainsaw");
 		chainsaw.setDailyCharge(1490000);
 		chainsaw.setWeekdayCharge(true);
 		chainsaw.setWeekendCharge(false);
@@ -42,7 +46,7 @@ public class H2DataLoader implements CommandLineRunner {
 		toolTypeRepository.save(chainsaw);
 		
 		ToolType jackhammer = new ToolType();
-		jackhammer.setToolType("Jackhammer");
+		jackhammer.setTypeName("Jackhammer");
 		jackhammer.setDailyCharge(2990000);
 		jackhammer.setWeekdayCharge(true);
 		jackhammer.setWeekendCharge(false);

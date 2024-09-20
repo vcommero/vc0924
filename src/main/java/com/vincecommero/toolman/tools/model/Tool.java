@@ -16,7 +16,7 @@ public class Tool {
 	private String toolCode;
 	
 	@ManyToOne
-	@JoinColumn(name = "tool_type", referencedColumnName = "tool_type")
+	@JoinColumn(name = "tool_type", referencedColumnName = "type_name")
 	private ToolType toolType;
 	
 	@Column(name = "tool_brand", nullable = false)

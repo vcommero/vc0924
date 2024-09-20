@@ -10,8 +10,8 @@ import jakarta.persistence.Table;
 public class ToolType {
 
 	@Id
-	@Column(name = "tool_type", nullable = false, unique = true)
-	private String toolType;
+	@Column(name = "type_name", nullable = false, unique = true)
+	private String typeName;
 	
 	@Column(name = "daily_charge", nullable = false)
 	private int dailyCharge; // Note: This is in microdollars, used to avoid precision errors with currency. Can use ints for small values.
@@ -27,11 +27,11 @@ public class ToolType {
 	
 	
 	// Getters and setters
-	public String getToolType() {
-		return toolType;
+	public String getTypeName() {
+		return typeName;
 	}
-	public void setToolType(String toolType) {
-		this.toolType = toolType;
+	public void setTypeName(String toolType) {
+		this.typeName = toolType;
 	}
 	
 	public int getDailyCharge() {
