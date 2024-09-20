@@ -5,7 +5,6 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import com.vincecommero.toolman.checkout.CheckoutService;
@@ -17,7 +16,14 @@ public class CheckoutCommands {
 	@Autowired
 	private CheckoutService checkoutService;
 	
-	public void checkout() {
+	private Scanner scanner;
+	
+	public String checkout(Scanner scanner) {
+		if (scanner != null)
+			this.scanner = scanner;
+		else
+			this.scanner = new Scanner(System.in);
+		
 		// Asks user for tool code
 		String toolCode = "";
 		while (toolCode.isBlank()) {
@@ -96,7 +102,9 @@ public class CheckoutCommands {
 		try {
 			agreement = checkoutService.checkout(toolCode, duration, checkoutDate, discountPercentage);
 			
-			System.out.println(agreement.toString());
+			return agreement.toString();
+		} catch (IllegalArgumentException ile) {
+			return ile.getLocalizedMessage();
 		} catch (Exception e) {
 			System.out.println("hit an error");
 			e.printStackTrace();
@@ -105,14 +113,12 @@ public class CheckoutCommands {
 	}
 	
 	private String prompt(String message) {
-		try (Scanner scanner = new Scanner(System.in)) {
-            System.out.print(message);
-            if (scanner.hasNextLine()) {
-                String input = scanner.nextLine();
-                return input;
-            } else {
-                return "";
-            }
+        System.out.print(message);
+        if (scanner.hasNextLine()) {
+            String input = scanner.nextLine();
+            return input;
+        } else {
+            return "";
         }
 	}
 }

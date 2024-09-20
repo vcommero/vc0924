@@ -66,24 +66,11 @@ public class H2DataLoader implements CommandLineRunner {
 		tool3.setToolType(jackhammer);
 		tool3.setToolBrand("DeWalt");
 		toolRepository.save(tool3);
-		/*
+		
 		Tool tool4 = new Tool();
 		tool4.setToolCode("JAKR");
 		tool4.setToolType(jackhammer);
 		tool4.setToolBrand("Ridgid");
-		toolRepository.save(tool4);*/
-		
-		// Preseed verification
-		System.out.println("Seeded data:");
-		toolRepository.findAll().forEach(tool -> {
-            System.out.println("Code: " + tool.getToolCode() + ", Brand: " + tool.getToolBrand());
-            ToolType toolType = tool.getToolType();
-            if (toolType != null) {
-                System.out.println("  ToolType: Charge: " + toolType.getDailyCharge() + ", WD charge: " + toolType.getWeekdayCharge() + 
-                		", WE charge: " + toolType.getWeekendCharge() + ", Type: " + toolType.getToolType());
-            } else {
-                System.out.println("  No profile for this user");
-            }
-        });
+		toolRepository.save(tool4);
 	}
 }

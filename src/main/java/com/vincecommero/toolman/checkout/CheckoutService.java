@@ -1,6 +1,7 @@
 package com.vincecommero.toolman.checkout;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class CheckoutService {
 			tool = toolService.getToolByToolCode(toolCode);
 			
 			System.out.println(tool.toString());
-		} catch (EntityNotFoundException nfe) {
+		} catch (EntityNotFoundException | NoSuchElementException e) {
 			throw new IllegalArgumentException("A tool with the tool code: '" + toolCode + "' was not found.");
 		}
 		

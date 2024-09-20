@@ -1,25 +1,25 @@
 package com.vincecommero.toolman.tools.model;
 
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "Tools",
-		uniqueConstraints = @UniqueConstraint(columnNames = { "toolCode" }))
+@Table(name = "Tools")
 public class Tool {
 
 	@Id
+	@Column(name = "tool_code", nullable = false, unique = true)
 	private String toolCode;
 	
-	@OneToOne
-	@JoinColumn(name = "toolType", referencedColumnName = "toolType")
+	@ManyToOne
+	@JoinColumn(name = "tool_type", referencedColumnName = "tool_type")
 	private ToolType toolType;
 	
+	@Column(name = "tool_brand", nullable = false)
 	private String toolBrand;
 
 	

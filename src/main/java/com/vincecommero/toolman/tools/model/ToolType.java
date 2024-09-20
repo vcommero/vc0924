@@ -1,23 +1,28 @@
 package com.vincecommero.toolman.tools.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "ToolTypes",
-		uniqueConstraints = @UniqueConstraint(columnNames = { "toolType" }))
+@Table(name = "ToolTypes")
 public class ToolType {
 
 	@Id
+	@Column(name = "tool_type", nullable = false, unique = true)
 	private String toolType;
 	
+	@Column(name = "daily_charge", nullable = false)
 	private int dailyCharge; // Note: This is in microdollars, used to avoid precision errors with currency. Can use ints for small values.
+	
+	@Column(name = "weekday_charge", nullable = false)
 	private boolean weekdayCharge;
+	
+	@Column(name = "weekend_charge", nullable = false)
 	private boolean weekendCharge;
+	
+	@Column(name = "holiday_charge", nullable = false)
 	private boolean holidayCharge;
 	
 	
