@@ -1,7 +1,9 @@
 package com.vincecommero.toolman.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.vincecommero.toolman.tools.model.Tool;
@@ -10,15 +12,14 @@ import com.vincecommero.toolman.tools.repository.ToolRepository;
 import com.vincecommero.toolman.tools.repository.ToolTypeRepository;
 
 @Component
+@Order(1)
 public class H2DataLoader implements CommandLineRunner {
 	
-	private final ToolRepository toolRepository;
-	private final ToolTypeRepository toolTypeRepository;
+	@Autowired
+	private ToolRepository toolRepository;
 	
-	public H2DataLoader(ToolRepository toolRepository, ToolTypeRepository toolTypeRepository) {
-		this.toolRepository = toolRepository;
-		this.toolTypeRepository = toolTypeRepository;
-	}
+	@Autowired
+	private ToolTypeRepository toolTypeRepository;
 
 	@Override
 	public void run(String... args) {
@@ -65,12 +66,12 @@ public class H2DataLoader implements CommandLineRunner {
 		tool3.setToolType(jackhammer);
 		tool3.setToolBrand("DeWalt");
 		toolRepository.save(tool3);
-		
+		/*
 		Tool tool4 = new Tool();
 		tool4.setToolCode("JAKR");
 		tool4.setToolType(jackhammer);
 		tool4.setToolBrand("Ridgid");
-		toolRepository.save(tool4);
+		toolRepository.save(tool4);*/
 		
 		// Preseed verification
 		System.out.println("Seeded data:");

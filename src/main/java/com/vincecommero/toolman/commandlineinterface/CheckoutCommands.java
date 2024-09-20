@@ -2,34 +2,26 @@ package com.vincecommero.toolman.commandlineinterface;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.Scanner;
 
-import org.jline.reader.LineReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
+import org.springframework.stereotype.Component;
 
 import com.vincecommero.toolman.checkout.CheckoutService;
 import com.vincecommero.toolman.checkout.model.RentalAgreement;
 
-@ShellComponent
-@ShellCommandGroup(value = "Rental Operations")
-public class RentalCommands {
-	
-	@Autowired
-	@Lazy
-	private LineReader lineReader;
+@Component
+public class CheckoutCommands {
 	
 	@Autowired
 	private CheckoutService checkoutService;
 	
-	@ShellMethod(value = "Checks out a tool from the inventory for rental.", key = "checkout")
-	public String checkout() {
+	public void checkout() {
 		// Asks user for tool code
 		String toolCode = "";
 		while (toolCode.isBlank()) {
-			toolCode = lineReader.readLine("Please enter the code of the tool you wish to checkout: ");
+			toolCode = prompt("Please enter the code of the tool you wish to checkout: ");
 			if (toolCode.isBlank())
 				System.out.println("Invalid input: Please enter a tool code.");
 		}
@@ -39,7 +31,7 @@ public class RentalCommands {
 		String durationInput = "";
 		Integer duration = null;
 		while (duration == null) {
-			durationInput = lineReader.readLine("Please enter the rental duration in days: ");
+			durationInput = prompt("Please enter the rental duration in days: ");
 			try {
 				duration = Integer.parseInt(durationInput);
 				if (duration < 1)
@@ -56,7 +48,7 @@ public class RentalCommands {
 		String discountInput = "";
 		Integer discountPercentage = null;
 		while (discountPercentage == null) {
-			discountInput = lineReader.readLine("Please enter the rental price discount percentage (from 0 to 100): ");
+			discountInput = prompt("Please enter the rental price discount percentage (from 0 to 100): ");
 			if (discountInput.isBlank())
 				discountPercentage = 0;
 			else {
@@ -77,7 +69,7 @@ public class RentalCommands {
 		String checkoutDateInput = "";
 		LocalDate checkoutDate = null;
 		while (checkoutDate == null) {
-			checkoutDateInput = lineReader.readLine("Please enter the checkout date (in YYYY-MM-DD) or press Enter for today: ");
+			checkoutDateInput = prompt("Please enter the checkout date (in YYYY-MM-DD) or press Enter for today: ");
 			if (checkoutDateInput.isBlank())
 				checkoutDate = LocalDate.now();
 			else {
@@ -104,11 +96,23 @@ public class RentalCommands {
 		try {
 			agreement = checkoutService.checkout(toolCode, duration, checkoutDate, discountPercentage);
 			
-			return agreement.toString();
+			System.out.println(agreement.toString());
 		} catch (Exception e) {
 			System.out.println("hit an error");
 			e.printStackTrace();
 			throw e;
 		}
+	}
+	
+	private String prompt(String message) {
+		try (Scanner scanner = new Scanner(System.in)) {
+            System.out.print(message);
+            if (scanner.hasNextLine()) {
+                String input = scanner.nextLine();
+                return input;
+            } else {
+                return "";
+            }
+        }
 	}
 }

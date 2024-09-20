@@ -16,7 +16,7 @@ public class Tool {
 	@Id
 	private String toolCode;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = "toolType", referencedColumnName = "toolType")
 	private ToolType toolType;
 	
