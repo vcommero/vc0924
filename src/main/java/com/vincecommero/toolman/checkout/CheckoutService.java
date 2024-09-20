@@ -35,7 +35,6 @@ public class CheckoutService {
 		Tool tool;
 		try {
 			tool = toolService.getToolByToolCode(toolCode);
-			
 			System.out.println(tool.toString());
 		} catch (EntityNotFoundException | NoSuchElementException e) {
 			throw new IllegalArgumentException("A tool with the tool code: '" + toolCode + "' was not found.");

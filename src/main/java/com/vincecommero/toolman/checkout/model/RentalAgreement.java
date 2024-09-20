@@ -1,6 +1,7 @@
 package com.vincecommero.toolman.checkout.model;
 
 import java.time.LocalDate;
+import com.vincecommero.toolman.utility.TextFormattingUtilities;
 
 public class RentalAgreement {
 	
@@ -123,5 +124,26 @@ public class RentalAgreement {
 		this.finalCharge = finalCharge;
 	}
 	
-	// Printing method
+	// Public methods
+	
+	/**
+	 * Prints a formatted document of the rental agreement to the console.
+	 */
+	public void printAgreementToConsole() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Tool code: ").append(toolCode).append("\n");
+		builder.append("Tool type: ").append(toolType).append("\n");
+		builder.append("Tool brand: ").append(toolBrand).append("\n");
+		builder.append("Rental days: ").append(rentalDays).append("\n");
+		builder.append("Check out date: ").append(TextFormattingUtilities.formatDate(checkoutDate)).append("\n");
+		builder.append("Due date: ").append(TextFormattingUtilities.formatDate(dueDate)).append("\n");
+		builder.append("Daily rental charge: ").append(TextFormattingUtilities.formatCurrency(dailyRentalCharge)).append("\n");
+		builder.append("Charge days: ").append(chargeDays).append("\n");
+		builder.append("Pre-discount charge: ").append(TextFormattingUtilities.formatCurrency(prediscountCharge)).append("\n");
+		builder.append("Discount percent: ").append(discountPercent).append("%\n");
+		builder.append("Discount amount: ").append(TextFormattingUtilities.formatCurrency(discountAmount)).append("\n");
+		builder.append("Final charge: ").append(TextFormattingUtilities.formatCurrency(finalCharge));
+		
+		System.out.println(builder.toString());
+	}
 }
