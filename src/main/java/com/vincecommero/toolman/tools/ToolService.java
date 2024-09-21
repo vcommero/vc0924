@@ -1,7 +1,5 @@
 package com.vincecommero.toolman.tools;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.vincecommero.toolman.tools.model.Tool;
@@ -19,22 +17,16 @@ public class ToolService {
 		this.toolRepository = toolRepository;
 		this.toolTypeRepository = toolTypeRepository;
 	}
-
-	public List<Tool> getAllTools() {
-		return toolRepository.findAll();
-	}
-	
-	public List<ToolType> getAllToolTypes() {
-		return toolTypeRepository.findAll();
-	}
 	
 	public Tool getToolByToolCode(String toolCode) {
 		return toolRepository.findById(toolCode).get();
 	}
 	
-	public ToolType getToolTypeByTypeName(String toolType) {
-		return toolTypeRepository.findById(toolType).get();
+	public Tool saveTool(Tool tool) {
+		return this.toolRepository.save(tool);
 	}
 	
-	
+	public ToolType saveToolType(ToolType toolType) {
+		return this.toolTypeRepository.save(toolType);
+	}
 }

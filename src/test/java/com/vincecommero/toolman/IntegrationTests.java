@@ -119,7 +119,6 @@ public class IntegrationTests {
 		
 		RentalAgreement receivedAgreement = assertDoesNotThrow(() -> 
 				checkoutService.checkout(testCase.toolCode, testCase.rentalDays, testCase.checkoutDate, testCase.discount));
-		receivedAgreement.printAgreementToConsole();
 		assertTrue(receivedAgreement.equals(expectedAgreement));
 	}
 	

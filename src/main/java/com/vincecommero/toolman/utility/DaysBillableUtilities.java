@@ -16,6 +16,7 @@ public class DaysBillableUtilities {
 	 * @return
 	 */
 	public static LocalDate getDueDate(LocalDate checkoutDate, int rentalDuration) {
+		if (rentalDuration < 0) throw new IllegalArgumentException("Rental duration must be greater than 0.");
 		return checkoutDate.plusDays(rentalDuration);
 	}
 	
@@ -30,6 +31,7 @@ public class DaysBillableUtilities {
 	 */
 	public static long getBillableDays(LocalDate checkoutDate, LocalDate dueDate, 
 			boolean weekdayCharge, boolean weekendCharge, boolean holidayCharge) {
+		if (dueDate.isBefore(checkoutDate)) throw new IllegalArgumentException("Due date cannot be before checkout date.");
 		return checkoutDate.plusDays(1).datesUntil(dueDate.plusDays(1))
 			.filter((cursorDate) -> checkIfDayIsBillable(cursorDate, weekdayCharge, weekendCharge, holidayCharge))
 			.count();

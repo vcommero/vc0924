@@ -58,11 +58,11 @@ public class CheckoutService {
 				toolType.getHolidayCharge());
 		long preDiscountCharge = (long) chargeDays * (long) toolType.getDailyCharge();
 		BigDecimal discountPercentDecimal = BigDecimal.valueOf(discountPercentage).divide(BigDecimal.valueOf(100));
-		BigDecimal discountAmountDecimal = BigDecimal
+		BigDecimal discountAmount = BigDecimal
 				.valueOf(preDiscountCharge)
 				.multiply(discountPercentDecimal) // Note: Operations in BigDecimal to handle potential large decimal values here.
 				.setScale(0, RoundingMode.HALF_UP);
-		long finalCharge = preDiscountCharge - discountAmountDecimal.longValue();
+		long finalCharge = preDiscountCharge - discountAmount.longValue();
 		
 		// Generate rental agreement
 		RentalAgreement agreement = new RentalAgreement(
@@ -76,7 +76,7 @@ public class CheckoutService {
 				chargeDays,
 				preDiscountCharge,
 				discountPercentage, 
-				discountAmountDecimal.longValue(),
+				discountAmount.longValue(),
 				finalCharge);
 		
 		return agreement;

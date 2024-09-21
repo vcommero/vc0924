@@ -2,14 +2,12 @@ package com.vincecommero.toolman.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.vincecommero.toolman.tools.ToolService;
 import com.vincecommero.toolman.tools.model.Tool;
 import com.vincecommero.toolman.tools.model.ToolType;
-import com.vincecommero.toolman.tools.repository.ToolRepository;
-import com.vincecommero.toolman.tools.repository.ToolTypeRepository;
 
 /**
  * Seeds data into the H2 database.
@@ -20,22 +18,17 @@ import com.vincecommero.toolman.tools.repository.ToolTypeRepository;
 public class H2DataLoader implements CommandLineRunner {
 	
 	@Autowired
-	private ToolRepository toolRepository;
-	
-	@Autowired
-	private ToolTypeRepository toolTypeRepository;
+	private ToolService toolService;
 
 	@Override
 	public void run(String... args) {
-		System.out.println("==== Starting commandlinerunner");
-		
 		ToolType ladder = new ToolType();
 		ladder.setTypeName("Ladder");
 		ladder.setDailyCharge(1990000);
 		ladder.setWeekdayCharge(true);
 		ladder.setWeekendCharge(true);
 		ladder.setHolidayCharge(false);
-		toolTypeRepository.save(ladder);
+		toolService.saveToolType(ladder);
 		
 		ToolType chainsaw = new ToolType();
 		chainsaw.setTypeName("Chainsaw");
@@ -43,7 +36,7 @@ public class H2DataLoader implements CommandLineRunner {
 		chainsaw.setWeekdayCharge(true);
 		chainsaw.setWeekendCharge(false);
 		chainsaw.setHolidayCharge(true);
-		toolTypeRepository.save(chainsaw);
+		toolService.saveToolType(chainsaw);
 		
 		ToolType jackhammer = new ToolType();
 		jackhammer.setTypeName("Jackhammer");
@@ -51,30 +44,30 @@ public class H2DataLoader implements CommandLineRunner {
 		jackhammer.setWeekdayCharge(true);
 		jackhammer.setWeekendCharge(false);
 		jackhammer.setHolidayCharge(false);
-		toolTypeRepository.save(jackhammer);
+		toolService.saveToolType(jackhammer);
 		
 		Tool tool1 = new Tool();
 		tool1.setToolCode("CHNS");
 		tool1.setToolType(chainsaw);
 		tool1.setToolBrand("Stihl");
-		toolRepository.save(tool1);
+		toolService.saveTool(tool1);
 		
 		Tool tool2 = new Tool();
 		tool2.setToolCode("LADW");
 		tool2.setToolType(ladder);
 		tool2.setToolBrand("Werner");
-		toolRepository.save(tool2);
+		toolService.saveTool(tool2);
 		
 		Tool tool3 = new Tool();
 		tool3.setToolCode("JAKD");
 		tool3.setToolType(jackhammer);
 		tool3.setToolBrand("DeWalt");
-		toolRepository.save(tool3);
+		toolService.saveTool(tool3);
 		
 		Tool tool4 = new Tool();
 		tool4.setToolCode("JAKR");
 		tool4.setToolType(jackhammer);
 		tool4.setToolBrand("Ridgid");
-		toolRepository.save(tool4);
+		toolService.saveTool(tool4);
 	}
 }
