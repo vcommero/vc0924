@@ -11,23 +11,23 @@ public class TextFormattingUtilities {
 
 	/**
 	 * Formats a currency integer value in microdollars as a print friendly format (e.g. "$X,XXX.XX").
-	 * @param currencyValue - Value is an integer in microdollars. Rounding is down using "half-even" which is a standard used in finance.
+	 * @param currencyValue - Value is an integer in microdollars. Rounding is "half-up".
 	 * @return Formatted string of the currency value. (e.g. "$X,XXX.XX")
 	 */
 	public static String formatCurrency(long currencyValue) {
-		BigDecimal currencyDecimal = new BigDecimal(currencyValue / 1000000f);
-		currencyDecimal.setScale(2, RoundingMode.HALF_EVEN);
+		BigDecimal currencyDecimal = BigDecimal.valueOf(currencyValue).divide(BigDecimal.valueOf(1000000));
+		currencyDecimal.setScale(2, RoundingMode.HALF_UP);
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
 		return currencyFormat.format(currencyDecimal);
 	}
 	
 	/**
-	 * Formats a LocalDate object as a string in mm/dd/yyyy format.
+	 * Formats a LocalDate object as a string in MM/dd/yyyy format.
 	 * @param date - Date as a LocalDate object
-	 * @return Returns a date string in mm/dd/yyyy format.
+	 * @return Returns a date string in MM/dd/yyyy format.
 	 */
 	public static String formatDate(LocalDate date) {
-		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("mm/dd/yyyy");
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 		return dateFormatter.format(date);
 	}
 }

@@ -1,5 +1,7 @@
 package com.vincecommero.toolman.checkout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.vincecommero.toolman.checkout.model.RentalAgreement;
 import com.vincecommero.toolman.tools.ToolService;
 import com.vincecommero.toolman.tools.model.Tool;
+import com.vincecommero.toolman.tools.model.ToolType;
+import com.vincecommero.toolman.utility.DaysBillableUtilities;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -43,13 +47,24 @@ public class CheckoutService {
 		Tool tool;
 		try {
 			tool = toolService.getToolByToolCode(toolCode);
-			System.out.println(tool.toString());
 		} catch (EntityNotFoundException | NoSuchElementException e) {
 			throw new IllegalArgumentException("A tool with the tool code: '" + toolCode + "' was not found.");
 		}
 		
 		// Compute calculated values for rental agreement
-		
+		ToolType toolType = tool.getToolType();
+		LocalDate dueDate = DaysBillableUtilities.getDueDate(checkoutDate, rentalDuration);
+		int chargeDays = (int) DaysBillableUtilities.getBillableDays(checkoutDate, dueDate, 
+				toolType.getWeekdayCharge(), 
+				toolType.getWeekendCharge(), 
+				toolType.getHolidayCharge());
+		long preDiscountCharge = (long) chargeDays * (long) toolType.getDailyCharge();
+		BigDecimal discountPercentDecimal = BigDecimal.valueOf(discountPercentage).divide(BigDecimal.valueOf(100));
+		BigDecimal discountAmountDecimal = BigDecimal
+				.valueOf(preDiscountCharge)
+				.multiply(discountPercentDecimal) // Note: Operations in BigDecimal to handle potential large decimal values here.
+				.setScale(0, RoundingMode.HALF_UP);
+		long finalCharge = preDiscountCharge - discountAmountDecimal.longValue();
 		
 		// Generate rental agreement
 		RentalAgreement agreement = new RentalAgreement(
@@ -58,18 +73,15 @@ public class CheckoutService {
 				tool.getToolBrand(), 
 				rentalDuration, 
 				checkoutDate, 
-				checkoutDate, // todo
+				dueDate,
 				tool.getToolType().getDailyCharge(), 
-				discountPercentage, // todo
-				discountPercentage, // todo
+				chargeDays,
+				preDiscountCharge,
 				discountPercentage, 
-				discountPercentage, // todo
-				discountPercentage); // todo
+				discountAmountDecimal.longValue(),
+				finalCharge);
 		
 		return agreement;
 	}
-	
-	
-	// Helper methods
 	
 }

@@ -92,21 +92,14 @@ public class CheckoutCommands {
 			}
 		}
 		
-		
-		System.out.println("Checkout values:\nToolCode: " + toolCode + 
-				"\nRental Duration: " + duration + 
-				"\nDiscount: " + discountPercentage +
-				"%\nCheckout Date: " + checkoutDate);
-		
 		RentalAgreement agreement;
 		try {
 			agreement = checkoutService.checkout(toolCode, duration, checkoutDate, discountPercentage);
-			
-			return agreement.toString();
+			agreement.printAgreementToConsole();
+			return "\nCheckout was successful!";
 		} catch (IllegalArgumentException ile) {
 			return ile.getLocalizedMessage();
 		} catch (Exception e) {
-			System.out.println("hit an error");
 			e.printStackTrace();
 			throw e;
 		}
