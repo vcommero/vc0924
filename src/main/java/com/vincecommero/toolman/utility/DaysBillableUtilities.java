@@ -30,7 +30,7 @@ public class DaysBillableUtilities {
 	 */
 	public static long getBillableDays(LocalDate checkoutDate, LocalDate dueDate, 
 			boolean weekdayCharge, boolean weekendCharge, boolean holidayCharge) {
-		return checkoutDate.datesUntil(dueDate.plusDays(1))
+		return checkoutDate.plusDays(1).datesUntil(dueDate.plusDays(1))
 			.filter((cursorDate) -> checkIfDayIsBillable(cursorDate, weekdayCharge, weekendCharge, holidayCharge))
 			.count();
 	}

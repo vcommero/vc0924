@@ -54,7 +54,7 @@ public class CheckoutCommands {
 		String discountInput = "";
 		Integer discountPercentage = null;
 		while (discountPercentage == null) {
-			discountInput = prompt("Please enter the rental price discount percentage (from 0 to 100): ");
+			discountInput = prompt("Please enter the rental price discount percentage (from 0 to 100) or press Enter for 0: ");
 			if (discountInput.isBlank())
 				discountPercentage = 0;
 			else {

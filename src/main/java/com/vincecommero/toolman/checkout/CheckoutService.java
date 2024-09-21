@@ -13,8 +13,6 @@ import com.vincecommero.toolman.tools.model.Tool;
 import com.vincecommero.toolman.tools.model.ToolType;
 import com.vincecommero.toolman.utility.DaysBillableUtilities;
 
-import jakarta.persistence.EntityNotFoundException;
-
 @Service
 public class CheckoutService {
 	
@@ -47,7 +45,7 @@ public class CheckoutService {
 		Tool tool;
 		try {
 			tool = toolService.getToolByToolCode(toolCode);
-		} catch (EntityNotFoundException | NoSuchElementException e) {
+		} catch (NoSuchElementException e) {
 			throw new IllegalArgumentException("A tool with the tool code: '" + toolCode + "' was not found.");
 		}
 		
@@ -69,12 +67,12 @@ public class CheckoutService {
 		// Generate rental agreement
 		RentalAgreement agreement = new RentalAgreement(
 				tool.getToolCode(), 
-				tool.getToolType().getTypeName(), 
+				toolType.getTypeName(), 
 				tool.getToolBrand(), 
 				rentalDuration, 
 				checkoutDate, 
 				dueDate,
-				tool.getToolType().getDailyCharge(), 
+				toolType.getDailyCharge(), 
 				chargeDays,
 				preDiscountCharge,
 				discountPercentage, 

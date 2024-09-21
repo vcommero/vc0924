@@ -1,6 +1,7 @@
 package com.vincecommero.toolman.checkout.model;
 
 import java.time.LocalDate;
+
 import com.vincecommero.toolman.utility.TextFormattingUtilities;
 
 public class RentalAgreement {
@@ -19,8 +20,6 @@ public class RentalAgreement {
 	private int discountPercent;
 	private long discountAmount;
 	private long finalCharge;
-	
-	public RentalAgreement() {}
 	
 	public RentalAgreement(String toolCode, String toolType, String toolBrand, int rentalDays, LocalDate checkoutDate,
 			LocalDate dueDate, int dailyRentalCharge, int chargeDays, long prediscountCharge, int discountPercent,
@@ -43,85 +42,49 @@ public class RentalAgreement {
 	public String getToolCode() {
 		return toolCode;
 	}
-	public void setToolCode(String toolCode) {
-		this.toolCode = toolCode;
-	}
 
 	public String getToolType() {
 		return toolType;
-	}
-	public void setToolType(String toolType) {
-		this.toolType = toolType;
 	}
 
 	public String getToolBrand() {
 		return toolBrand;
 	}
-	public void setToolBrand(String toolBrand) {
-		this.toolBrand = toolBrand;
-	}
 
 	public int getRentalDays() {
 		return rentalDays;
-	}
-	public void setRentalDays(int rentalDays) {
-		this.rentalDays = rentalDays;
 	}
 
 	public LocalDate getCheckoutDate() {
 		return checkoutDate;
 	}
-	public void setCheckoutDate(LocalDate checkoutDate) {
-		this.checkoutDate = checkoutDate;
-	}
 
 	public LocalDate getDueDate() {
 		return dueDate;
-	}
-	public void setDueDate(LocalDate dueDate) {
-		this.dueDate = dueDate;
 	}
 
 	public int getDailyRentalCharge() {
 		return dailyRentalCharge;
 	}
-	public void setDailyRentalCharge(int dailyRentalCharge) {
-		this.dailyRentalCharge = dailyRentalCharge;
-	}
 
 	public int getChargeDays() {
 		return chargeDays;
-	}
-	public void setChargeDays(int chargeDays) {
-		this.chargeDays = chargeDays;
 	}
 
 	public long getPrediscountCharge() {
 		return prediscountCharge;
 	}
-	public void setPrediscountCharge(long prediscountCharge) {
-		this.prediscountCharge = prediscountCharge;
-	}
 
 	public int getDiscountPercent() {
 		return discountPercent;
-	}
-	public void setDiscountPercent(int discountPercent) {
-		this.discountPercent = discountPercent;
 	}
 
 	public long getDiscountAmount() {
 		return discountAmount;
 	}
-	public void setDiscountAmount(long discountAmount) {
-		this.discountAmount = discountAmount;
-	}
 
 	public long getFinalCharge() {
 		return finalCharge;
-	}
-	public void setFinalCharge(long finalCharge) {
-		this.finalCharge = finalCharge;
 	}
 	
 	// Public methods
@@ -146,4 +109,24 @@ public class RentalAgreement {
 		
 		System.out.println(builder.toString());
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof RentalAgreement)) return false;
+		RentalAgreement comparedAgreement = (RentalAgreement) obj;
+	
+		return this.toolCode.equals(comparedAgreement.toolCode) &&
+				this.toolType.equals(comparedAgreement.toolType) &&
+				this.toolBrand.equals(comparedAgreement.toolBrand) &&
+				this.rentalDays == comparedAgreement.rentalDays &&
+				this.checkoutDate.isEqual(comparedAgreement.checkoutDate) &&
+				this.dueDate.isEqual(comparedAgreement.dueDate) &&
+				this.dailyRentalCharge == comparedAgreement.dailyRentalCharge &&
+				this.chargeDays == comparedAgreement.chargeDays &&
+				this.prediscountCharge == comparedAgreement.prediscountCharge &&
+				this.discountPercent == comparedAgreement.discountPercent &&
+				this.discountAmount == comparedAgreement.discountAmount &&
+				this.finalCharge == comparedAgreement.finalCharge;
+	}
+	
 }
