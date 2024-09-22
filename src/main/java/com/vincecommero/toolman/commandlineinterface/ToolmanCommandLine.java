@@ -10,13 +10,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.vincecommero.toolman.commandlineinterface.utility.ConsoleIO;
+
 @Component
 @Order(2)
 public class ToolmanCommandLine implements CommandLineRunner {
 	
 	private final CheckoutCommands checkoutCommands;
-	
 	private final ApplicationContext applicationContext;
+	private final ConsoleIO consoleIO;
 	
 	private final String banner = 
 			"\n" +
@@ -28,9 +30,10 @@ public class ToolmanCommandLine implements CommandLineRunner {
 	
 	private final List<String> commandsList = new ArrayList<>();
 	
-	public ToolmanCommandLine(CheckoutCommands checkoutCommands, ApplicationContext applicationContext) {
+	public ToolmanCommandLine(CheckoutCommands checkoutCommands, ApplicationContext applicationContext, ConsoleIO consoleIO) {
 		this.checkoutCommands = checkoutCommands;
 		this.applicationContext = applicationContext;
+		this.consoleIO = consoleIO;
 		
 		commandsList.add("checkout - Checks out a tool for rental and prints out a rental agreement.");
 		commandsList.add("exit - Exits the application.");
@@ -38,38 +41,37 @@ public class ToolmanCommandLine implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		System.out.println(banner);
+		consoleIO.println(banner);
 		
-		try (Scanner scanner = new Scanner(System.in)) {
-			boolean running = true;
-			while (running) {
-				// Prompt user for input
-				System.out.println("\nPlease select one of the following options:");
-				for (String command : commandsList) {
-					System.out.println(command);
-				}
-				System.out.println();
-				
-				// Read user input
-				String input = scanner.nextLine().trim().toLowerCase();
-				
-				// Process user input
-				String outputMessage = switch (input) {
-					case "checkout": {
-						yield checkoutCommands.checkout(scanner);
-					}
-					case "exit": {
-						running = false;
-						yield "Exiting application...";
-					}
-					default: {
-						yield "Unrecognized command: " + input;
-					}
-				};
-				
-				// Print output of command
-				System.out.println(outputMessage);
+		boolean running = true;
+		while (running) {
+			// Prompt user for input
+			StringBuilder builder = new StringBuilder("\nPlease select one of the following options:\n");
+			for (String command : commandsList) {
+				builder.append(command).append("\n");
 			}
+			String input = consoleIO.prompt(builder.toString())
+					.trim().toLowerCase();
+			
+			// Process user input
+			String outputMessage = switch (input) {
+				case "": {
+					yield "Please select an option.";
+				}
+				case "checkout": {
+					yield checkoutCommands.checkout();
+				}
+				case "exit": {
+					running = false;
+					yield "Exiting application...";
+				}
+				default: {
+					yield "Unrecognized command: " + input;
+				}
+			};
+			
+			// Print output of command
+			consoleIO.println(outputMessage);
 		}
 		
 		// Exits the application

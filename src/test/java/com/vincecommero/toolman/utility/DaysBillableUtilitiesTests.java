@@ -1,13 +1,35 @@
 package com.vincecommero.toolman.utility;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
 public class DaysBillableUtilitiesTests {
+	
+	@Test
+	void shouldDetermineIfADateIsAnIndependenceDayHoliday() {
+		assertFalse(DaysBillableUtilities.isIndependenceDayHoliday(LocalDate.of(2024, 7, 5)));
+		assertTrue(DaysBillableUtilities.isIndependenceDayHoliday(LocalDate.of(2024, 7, 4)));
+		
+		assertFalse(DaysBillableUtilities.isIndependenceDayHoliday(LocalDate.of(2021, 7, 4)));
+		assertTrue(DaysBillableUtilities.isIndependenceDayHoliday(LocalDate.of(2021, 7, 5)));
+		
+		assertFalse(DaysBillableUtilities.isIndependenceDayHoliday(LocalDate.of(2020, 7, 4)));
+		assertTrue(DaysBillableUtilities.isIndependenceDayHoliday(LocalDate.of(2020, 7, 3)));
+	}
+	
+	@Test
+	void shouldDetermineIfADateIsALaborDayHoliday() {
+		assertFalse(DaysBillableUtilities.isLaborDayHoliday(LocalDate.of(2014, 8, 31)));
+		assertTrue(DaysBillableUtilities.isLaborDayHoliday(LocalDate.of(2014, 9, 1)));
+		assertFalse(DaysBillableUtilities.isLaborDayHoliday(LocalDate.of(2015, 9, 1)));
+		assertTrue(DaysBillableUtilities.isLaborDayHoliday(LocalDate.of(2015, 9, 7)));
+	}
 
 	@Test
 	void shouldCalculateDueDateFromACheckoutDateAndRentalDuration() {

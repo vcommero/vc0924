@@ -1,5 +1,6 @@
 package com.vincecommero.toolman.checkout.model;
 
+import java.io.PrintStream;
 import java.time.LocalDate;
 
 import com.vincecommero.toolman.utility.TextFormattingUtilities;
@@ -90,9 +91,9 @@ public class RentalAgreement {
 	// Public methods
 	
 	/**
-	 * Prints a formatted document of the rental agreement to the console.
+	 * Prints a formatted document of the rental agreement to the desired print stream.
 	 */
-	public void printAgreementToConsole() {
+	public void printAgreement(PrintStream printStream) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Tool code: ").append(toolCode).append("\n");
 		builder.append("Tool type: ").append(toolType).append("\n");
@@ -107,7 +108,14 @@ public class RentalAgreement {
 		builder.append("Discount amount: ").append(TextFormattingUtilities.formatCurrency(discountAmount)).append("\n");
 		builder.append("Final charge: ").append(TextFormattingUtilities.formatCurrency(finalCharge));
 		
-		System.out.println(builder.toString());
+		printStream.println(builder.toString());
+	}
+	
+	/**
+	 * Prints a formatted document of the rental agreement to the console.
+	 */
+	public void printAgreementToConsole() {
+		printAgreement(System.out);
 	}
 
 	@Override
@@ -115,18 +123,18 @@ public class RentalAgreement {
 		if (!(obj instanceof RentalAgreement)) return false;
 		RentalAgreement comparedAgreement = (RentalAgreement) obj;
 	
-		return this.toolCode.equals(comparedAgreement.toolCode) &&
-				this.toolType.equals(comparedAgreement.toolType) &&
-				this.toolBrand.equals(comparedAgreement.toolBrand) &&
-				this.rentalDays == comparedAgreement.rentalDays &&
-				this.checkoutDate.isEqual(comparedAgreement.checkoutDate) &&
-				this.dueDate.isEqual(comparedAgreement.dueDate) &&
-				this.dailyRentalCharge == comparedAgreement.dailyRentalCharge &&
-				this.chargeDays == comparedAgreement.chargeDays &&
-				this.prediscountCharge == comparedAgreement.prediscountCharge &&
-				this.discountPercent == comparedAgreement.discountPercent &&
-				this.discountAmount == comparedAgreement.discountAmount &&
-				this.finalCharge == comparedAgreement.finalCharge;
+		return this.getToolCode().equals(comparedAgreement.getToolCode()) &&
+				this.getToolType().equals(comparedAgreement.getToolType()) &&
+				this.getToolBrand().equals(comparedAgreement.getToolBrand()) &&
+				this.getRentalDays() == comparedAgreement.getRentalDays() &&
+				this.getCheckoutDate().isEqual(comparedAgreement.getCheckoutDate()) &&
+				this.getDueDate().isEqual(comparedAgreement.getDueDate()) &&
+				this.getDailyRentalCharge() == comparedAgreement.getDailyRentalCharge() &&
+				this.getChargeDays() == comparedAgreement.getChargeDays() &&
+				this.getPrediscountCharge() == comparedAgreement.getPrediscountCharge() &&
+				this.getDiscountPercent() == comparedAgreement.getDiscountPercent() &&
+				this.getDiscountAmount() == comparedAgreement.getDiscountAmount() &&
+				this.getFinalCharge() == comparedAgreement.getFinalCharge();
 	}
 	
 }

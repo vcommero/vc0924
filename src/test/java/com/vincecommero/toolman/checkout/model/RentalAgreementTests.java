@@ -3,6 +3,11 @@ package com.vincecommero.toolman.checkout.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -11,11 +16,16 @@ import java.time.LocalDate;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import com.vincecommero.toolman.commandlineinterface.utility.ConsoleIO;
 
 public class RentalAgreementTests {
 	
-	private final ByteArrayOutputStream streamCaptor = new ByteArrayOutputStream();
-	private final PrintStream originalOutput = System.out;
+	private PrintStream mockPrintStream = mock(PrintStream.class);
 	
 	private RentalAgreement testAgreement = new RentalAgreement(
 			"CHNS", 
@@ -30,16 +40,6 @@ public class RentalAgreementTests {
 			25, 
 			1117500,
 			3352500);
-	
-	@BeforeEach
-	void setup() {
-		System.setOut(new PrintStream(streamCaptor));
-	}
-	
-	@AfterEach
-	void cleanup() {
-		System.setOut(originalOutput);
-	}
 
 	@Test
 	void shouldBeAbleToCompareEquality() {
@@ -64,8 +64,17 @@ public class RentalAgreementTests {
 				"Discount percent: 25%\n" +
 				"Discount amount: $1.12\n" +
 				"Final charge: $3.35";
-
-		testAgreement.printAgreementToConsole();
-		assertEquals(expectedOutput, streamCaptor.toString().trim());
+		
+		ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+		doNothing().when(mockPrintStream).println(captor.capture());
+		
+		testAgreement.printAgreement(mockPrintStream);
+		
+		assertEquals(expectedOutput, captor.getValue().trim());
+	}
+	
+	@Test
+	void shouldUseDefaultSystemOutIfPrintAgreementCalledWithNoArguments() {
+		
 	}
 }
