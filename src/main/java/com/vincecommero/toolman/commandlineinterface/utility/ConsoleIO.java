@@ -45,7 +45,7 @@ public class ConsoleIO implements DisposableBean {
 	 * Closes the Scanner at end of bean lifecycle
 	 */
 	@Override
-	public void destroy() throws Exception {
-		if (scanner != null) scanner.close();
+	public void destroy() {
+		scanner.close();
 	}
 }
