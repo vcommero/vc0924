@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayOutputStream;
@@ -65,16 +66,36 @@ public class RentalAgreementTests {
 				"Discount amount: $1.12\n" +
 				"Final charge: $3.35";
 		
-		ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
-		doNothing().when(mockPrintStream).println(captor.capture());
+		//ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+		//doNothing().when(mockPrintStream).println(captor.capture());
 		
 		testAgreement.printAgreement(mockPrintStream);
 		
-		assertEquals(expectedOutput, captor.getValue().trim());
+		verify(mockPrintStream).println(expectedOutput);
 	}
 	
 	@Test
 	void shouldUseDefaultSystemOutIfPrintAgreementCalledWithNoArguments() {
+		String expectedOutput = 
+				"Tool code: CHNS\n" + 
+				"Tool type: Chainsaw\n" +
+				"Tool brand: Stihl\n" +
+				"Rental days: 5\n" +
+				"Check out date: 07/02/2015\n" +
+				"Due date: 07/07/2015\n" +
+				"Daily rental charge: $1.49\n" +
+				"Charge days: 3\n" +
+				"Pre-discount charge: $4.47\n" +
+				"Discount percent: 25%\n" +
+				"Discount amount: $1.12\n" +
+				"Final charge: $3.35";
 		
+		PrintStream standardOut = System.out;
+		System.setOut(mockPrintStream);
+		
+		testAgreement.printAgreementToConsole();
+		verify(mockPrintStream).println(expectedOutput);
+		
+		System.setOut(standardOut);
 	}
 }

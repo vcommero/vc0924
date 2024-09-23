@@ -22,8 +22,6 @@ public class CheckoutCommands {
 		this.consoleIO = consoleIO;
 	}
 	
-	private Scanner scanner;
-	
 	public String checkout() {
 		
 		// Asks user for tool code
@@ -102,9 +100,6 @@ public class CheckoutCommands {
 			return "Checkout was successful!";
 		} catch (IllegalArgumentException ile) {
 			return ile.getLocalizedMessage();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
 		}
 	}
 }

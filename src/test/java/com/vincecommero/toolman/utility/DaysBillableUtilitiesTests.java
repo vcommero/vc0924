@@ -42,5 +42,7 @@ public class DaysBillableUtilitiesTests {
 	void shouldCalculateBillableDaysGivenProperParameters() {
 		assertThrows(IllegalArgumentException.class, () -> 
 			DaysBillableUtilities.getBillableDays(LocalDate.of(2020, 10, 5), LocalDate.of(2020, 10, 4), false, false, false));
+		long output = DaysBillableUtilities.getBillableDays(LocalDate.of(2024, 9, 1), LocalDate.of(2024, 9, 7), true, false, false);
+		assertEquals(4, output);
 	}
 }
