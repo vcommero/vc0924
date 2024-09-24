@@ -1,5 +1,6 @@
 package com.vincecommero.toolman.checkout;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.vincecommero.toolman.checkout.model.RentalAgreement;
 import com.vincecommero.toolman.tools.ToolService;
 import com.vincecommero.toolman.tools.model.Tool;
 import com.vincecommero.toolman.tools.model.ToolType;
@@ -82,6 +84,20 @@ class CheckoutServiceTests {
 		assertTrue(exception.getLocalizedMessage().equals(expectedMessage));
 	}
 	
-	
+	@Test
+	void shouldCorrectCalculateAndGenerateRentalAgreement() {
+		when(toolService.getToolByToolCode(anyString())).thenReturn(testTool1);
+		
+		RentalAgreement expectedAgreement = new RentalAgreement(
+				"ABCD", "Type1", "Test Brand", 
+				10, 
+				LocalDate.of(2024, 8, 30), LocalDate.of(2024, 9, 9), 
+				1000000, 6, 6000000, 
+				10, 600000, 
+				5400000);
+		
+		RentalAgreement agreement = checkoutService.checkout(testTool1.getToolCode(), 10, LocalDate.of(2024, 8, 30), 10);
+		assertTrue(expectedAgreement.equals(agreement));
+	}
 	
 }
